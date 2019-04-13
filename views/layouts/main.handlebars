@@ -7,9 +7,10 @@
     <title>Eat-Da-Burger!</title>
     <link href="/assets/img/myfavicon.ico" rel="icon" type="image/x-icon" />
     <link href="/assets/img/myfavicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <!-- Latest compiled and minified CSS & JS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../../public/assets/css/burger_style.css">
+    <link rel="stylesheet" href="/assets/css/burger_style.css">
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </head>
@@ -18,6 +19,41 @@
     {{{ body }}}
 
     <script>
-
+        $(function () {
+            $(".change-devoured").on("click", function (event) {
+                var id = $(this).data("id");
+                var newDevouredState = {
+                    devoured: true
+                };
+                // Send the PUT request.
+                $.ajax("/api/burgers/" + id, {
+                    type: "PUT",
+                    data: newDevouredState
+                }).then(
+                    function () {
+                        location.reload();
+                    }
+                );
+            });
+            $(".create-form").on("submit", function (event) {
+                event.preventDefault();
+                var newBurger = {
+                    burger_name: $("#burger").val().trim()
+                };
+                // Send the POST request.
+                $.ajax("/api/burgers", {
+                    type: "POST",
+                    data: newBurger
+                }).then(
+                    function () {
+                        console.log("Created new burger");
+                        // Reload the page 
+                        location.reload();
+                    }
+                );
+            });
+        });
     </script>
 </body>
+
+</html>

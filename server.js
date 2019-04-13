@@ -15,17 +15,6 @@ var connection = mysql.createConnection({
   database: "burgers_db"
 });
 
-
-// parse app
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-// Static directory to be serve
-app.use(express.static(__dirname + '/public'));
-
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
-
 // Routes
 var routes = require("./controllers/burgers_controller");
 app.use('/', routes);
@@ -37,11 +26,22 @@ connection.connect(function (err) {
   }
 });
 
+// parse app
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+// Static directory to be serve
+app.use(express.static(__dirname + '/public'));
+
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+
+
+
 // Start server
 app.listen(PORT, function () {
   console.log(
     "==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.",
     PORT,
-    PORT
   );
 });

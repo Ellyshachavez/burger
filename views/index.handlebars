@@ -1,0 +1,58 @@
+<div class "main-page d-flex flex-column bg">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="jumbotron">
+          <h1 class="display-4">Build-Da-Burger</h1>
+          <hr class="my-4">
+          <p>What's your favorite burger?</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create new burger row -->
+    <div class="row newBurger">
+      <div class="col-sm-12">
+        <div class="form-container">
+          <h5>Build a Burger</h5>
+          <br>
+          <form class="create-form">
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="Burger name" aria-label="New burger name" id="burger" name="burger_name"
+                aria-describedby="basic-addon2">
+              <div class="input-group-append">
+                <button type="submit">
+                  <i class="fa fa-fire" aria-hidden="true"></i> Add Burger</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Burger lists -->
+    <div class="row">
+      <div class="col-sm-5 list">
+        <h5>Ready Made Burgers</h5>
+        <br>
+        <ul class="newburger">
+          {{#each burgers}} {{#unless devoured}} {{> burgers/burger-block devoured=true}} {{/unless}} {{/each}}
+        </ul>
+      </div>
+
+      <div class="col-sm-2 list"></div>
+
+      <div class="col-sm-5 list">
+        <h5>Devoured Burgers</h5>
+        <br>
+        <ul class="eatenburger">
+          {{#each burgers}} {{#if devoured}}
+          <li>
+            {{burger_name}}
+          </li>
+          <hr> {{/if}}{{/each}}
+        </ul>
+      </div>
+    </div>
+    <!-- End burger lists -->
+  </div>
+</div>
