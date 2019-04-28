@@ -1,17 +1,18 @@
-    
+// Dependencies
 var express = require("express");
-
 var router = express.Router();
-
 var burger = require("../models/burger.js");
 
-// Create all our routes and set up logic within those routes where required.
+
+// Routes
+// =============================================================
+// Create all our routes and set up logic within those routes.
 router.get("/", function(req, res) {
     burger.selectAll(function (data) {
       var hbsObject = {
         burgers: data
       };
-      console.log(hbsObject);
+      // console.log(hbsObject);
       res.render("index", hbsObject);
     });
   });
@@ -22,7 +23,7 @@ router.get("/", function(req, res) {
     ], [
       req.body.burger_name
     ], function(result) {
-      // Send back the ID of the new burger
+      // Send back ID of the new burger
       res.json({ id: result.insertId });
     });
   });
@@ -34,7 +35,7 @@ router.get("/", function(req, res) {
       devoured: true
     }, condition, function (data) {
       if (res.changedRows == 0) {
-        // If no rows were changed, then the ID must not exist, so 404
+        // If no rows were changed, then the ID must not exist,404
         return res.status(404).end();
       } else {
         res.status(200).end();
