@@ -1,39 +1,46 @@
 // Dependecies
-var connection = require("./connection.js");;
+var connection = require("./connection");;
 
 // Helper function for SQL syntax.
 // Let's say we want to pass 3 values into the mySQL query.
 // In order to write the query, we need 3 question marks.
 // The above helper function loops through and creates an array of question marks - ["?", "?", "?"] - and turns it into a string.
 // ["?", "?", "?"].toString() => "?,?,?";
-function printQMarks(num) {
-    var array = [];
+function printQuestionMarks(num) {
+    var arr = [];
 
     for (var i = 0; i < num; i++) {
-        array.push("?");
+        arr.push("?");
     }
-    return array.toString();
+
+    return arr.toString();
 }
 
-// function to convert object key/value to SQL syntax
+// Helper function to convert object key/value pairs to SQL syntax
 function objToSql(ob) {
-    var array = [];
+    var arr = [];
 
-    
+    // loop through the keys and push the key/value as a string int arr
     for (var key in ob) {
         var value = ob[key];
         // check to skip hidden properties
         if (Object.hasOwnProperty.call(ob, key)) {
-            // if string with spaces, add quotations
+            // if string with spaces, add quotations (Summer Thyme Burger => 'Summer Thyme Burger')
             if (typeof value === "string" && value.indexOf(" ") >= 0) {
                 value = "'" + value + "'";
             }
-            array.push(key + "=" + value);
+            arr.push(key + "=" + value);
         }
     }
-    return array.toString();
+
+    // translate array of strings to a single comma-separated string
+    return arr.toString();
 }
 
+// NOTE TO SELF
+// The ?? signs are for swapping out table or column names
+// The ? signs are for swapping out other values
+// These help avoid SQL injection
 
 var orm = {
     selectAll: function (table, cb) {
@@ -46,14 +53,14 @@ var orm = {
 
 	insertOne: function(table, cols, vals, cb) {
 		// Construct the query string that inserts a single row into the target table
-		var queryStr = "INSERT INTO " + table;
+		var queryString = "INSERT INTO " + table;
 
-		queryStr += " (";
-		queryStr += cols.toString();
-		queryStr += ") ";
-		queryStr += "VALUES (";
-		queryStr += printQMarks(vals.length);
-		queryStr += ") ";
+		queryString += " (";
+		queryString += cols.toString();
+		queryString += ") ";
+		queryString += "VALUES (";
+		queryString += printQuestionMarks(vals.length);
+		queryString += ") ";
 
 		connection.query(queryString, vals, function(err, result) {
             if (err) throw err;
